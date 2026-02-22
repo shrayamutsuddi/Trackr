@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackr</title>
+</head>
+<body>
+    <h1>Welcome to Trackr</h1>
+    <h4>An expense tracker app</h4>
+    <h3>Add expense</h3>
+    <div>
+        <form action="/api/add" method="post">
+            <select name="transactionType" required>
+                <option value="">Transaction Type</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <input type="number" name="amount" placeholder="amount" required>
+            <input type="text" name="category" placeholder="category" required>
+            <input type="text" name="decsription" placeholder="description">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <h2>All transactions</h2>
+    <ul>
+        <% transactions.forEach(function(item){ %>
+            <li>
+                <%= item.transactionType %> -
+                <%= item.amount %> -
+                <%= item.category %>
+                <form action="/api/delete/<%= item._id %>?_method=DELETE" method="POST">
+                    <button type="submit">Delete Expense</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+    <div>
+        <h2>Total Income: Rupees <%= totalIncome %></h2>
+        <h2>Total Expense: Rupees <%= totalExpense %></h2>
+        <h2>Remaining Amount: Rupees <%= balance %></h2>
+    </div>
+</body>
+</html>
