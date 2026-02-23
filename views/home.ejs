@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Trackr</title>
+    <link rel="stylesheet" href="/stylesheets/home.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Trackr</h1>
-    <h4>An expense tracker app</h4>
-    <h3>Add expense</h3>
+        <h1>Welcome to Trackr!</h1>
+    <p>An expense tracker app.</p>
+    <h3>Add expense here:</h3>
     <div>
         <form action="/api/add" method="post">
             <select name="transactionType" required>
@@ -25,11 +30,10 @@
             <button type="submit">Add</button>
         </form>
     </div>
-    <h2>All transactions</h2>
     
     <div>
         <form action="/api" method="GET">
-              <h4>Filter by transaction type: </h4>
+              <h6>Filter by transaction type: </h6>
               <select name="transactionType" class="form-select form-select-sm" aria-label="Small select example" onchange="this.form.submit()"> 
                 <option value=""
                 <%= selectedType === "" ? "selected" : "" %>>
@@ -48,6 +52,7 @@
     </div>
     <!-- 4 cards per layout transactions -->
     <div class="container mt-4">
+        <h4 class="all-trans">All transactions:</h4>
     <div class="row">
 
         <% transactions.forEach(function(item){ %>
@@ -101,9 +106,9 @@
     <div class="container">
         <div class="row">
             <div class="column">
-                <h2>Total Income: Rupees <%= totalIncome %></h2>
-                <h2>Total Expense: Rupees <%= totalExpense %></h2>
-                <h2>Remaining Amount: Rupees <%= balance %></h2>
+                <h6>Total Income: ₹ <%= totalIncome %></h6>
+                <h6>Total Expense: ₹ <%= totalExpense %></h6>
+                <h6>Remaining Amount: ₹ <%= balance %></h6>
             </div>
         </div>
     </div>
