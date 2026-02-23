@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+<body>
+    <h3>Edit details</h3>
+    <form action="/api/edit/<%= transactionToEdit._id %>?_method=PUT" method="POST">
+        <select name="transactionType">
+            <option value="">Transaction Type</option>
+            <option value="income"
+            <%= transactionToEdit.transactionType === "income" ? "selected" : "" %>>
+                Income
+            </option>
+
+            <option value="expense"
+            <%= transactionToEdit.transactionType === "expense" ? "selected" : "" %>>
+                Expense
+            </option>
+        </select>
+        <input
+        type="text"
+        name="category"
+        value="<%= transactionToEdit.category %>"
+        />
+        <input
+        type="number"
+        name="amount"
+        value="<%= transactionToEdit.amount %>"
+        />
+        <input
+        type="text"
+        name="description"
+        value="<%= transactionToEdit.description %>"
+        />
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

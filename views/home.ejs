@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Trackr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Welcome to Trackr</h1>
+    <div class="container">
+        <h1>Welcome to Trackr</h1>
     <h4>An expense tracker app</h4>
     <h3>Add expense</h3>
     <div>
@@ -23,22 +26,89 @@
         </form>
     </div>
     <h2>All transactions</h2>
-    <ul>
-        <% transactions.forEach(function(item){ %>
-            <li>
-                <%= item.transactionType %> -
-                <%= item.amount %> -
-                <%= item.category %>
-                <form action="/api/delete/<%= item._id %>?_method=DELETE" method="POST">
-                    <button type="submit">Delete Expense</button>
-                </form>
-            </li>
-        <% }) %>
-    </ul>
+    
     <div>
-        <h2>Total Income: Rupees <%= totalIncome %></h2>
-        <h2>Total Expense: Rupees <%= totalExpense %></h2>
-        <h2>Remaining Amount: Rupees <%= balance %></h2>
+        <form action="/api" method="GET">
+              <h4>Filter by transaction type: </h4>
+              <select name="transactionType" class="form-select form-select-sm" aria-label="Small select example" onchange="this.form.submit()"> 
+                <option value=""
+                <%= selectedType === "" ? "selected" : "" %>>
+                    All
+                </option>
+                <option value="income"
+                <%= selectedType === "income" ? "selected" : "" %>>
+                    Income
+                </option>
+                <option value="expense"
+                <%= selectedType === "expense" ? "selected" : "" %>>
+                    Expense
+                </option>
+              </select>
+        </form>
     </div>
+    <!-- 4 cards per layout transactions -->
+    <div class="container mt-4">
+    <div class="row">
+
+        <% transactions.forEach(function(item){ %>
+
+            <div class="col-6 col-md-3 mb-3">
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body p-2">
+
+                        <h6 class="card-title mb-1">
+                            ₹ <%= item.amount %>
+                        </h6>
+
+                        <p class="mb-1 small text-muted">
+                            <%= item.date.toLocaleDateString() %>
+                        </p>
+
+                        <p class="mb-1 small">
+                            <%= item.transactionType %>
+                        </p>
+
+                        <p class="mb-2 small">
+                            <%= item.category %>
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+
+                            <form action="/api/edit/<%= item._id %>" method="GET">
+                                <button class="btn btn-outline-primary btn-sm">
+                                    Edit
+                                </button>
+                            </form>
+
+                            <form action="/api/delete/<%= item._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-outline-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        <% }) %>
+
+    </div>
+</div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <h2>Total Income: Rupees <%= totalIncome %></h2>
+                <h2>Total Expense: Rupees <%= totalExpense %></h2>
+                <h2>Remaining Amount: Rupees <%= balance %></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

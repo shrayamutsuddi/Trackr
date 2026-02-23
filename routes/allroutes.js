@@ -6,10 +6,21 @@ const transaction = require("../models/transaction");
 
 router.get("/", async(request, response)=>{
     // response.send("Route is working");
-    const transactions = await transaction.find();
-    let totalIncome = 0;
-    let totalExpense = 0;
-    transactions.forEach((x)=>{
+    try{
+        console.log("Query: ", request.query);
+        const filter = {};
+
+        if(request.query.transactionType === "income"){
+            filter.transactionType = "income";
+        }
+        if(request.query.transactionType === "expense"){
+            filter.transactionType = "expense";
+        }
+        const transactions = await transaction.find(filter);
+
+        let totalIncome = 0;
+        let totalExpense = 0;
+        transactions.forEach((x)=>{
         if(x.transactionType === "income"){
             totalIncome += x.amount;
         }else{
@@ -21,8 +32,12 @@ router.get("/", async(request, response)=>{
         transactions,
         totalIncome,
         totalExpense,
-        balance
+        balance,
+        selectedType: request.query.transactionType || ""
      })
+    }catch(e){
+        response.status(500).send(e.message)
+    }
 });
 
 //add transaction
@@ -52,7 +67,7 @@ router.get("/all", async(req, res)=>{
     }
 });
 
-//delete transaction
+//delete a transaction
 router.delete("/delete/:id", async(req,res)=>{
     
     try{
@@ -75,8 +90,23 @@ router.get("/filterbytype", async(req, res)=>{
     }
 })
 
+//edit transaction
+router.get("/edit/:id", async(req, res)=>{
+    const transactionToEdit = await transaction.findById(req.params.id);
+    res.render("edit", { transactionToEdit })
+})
 
-
+router.put("/edit/:id", async(req, res)=>{
+    try{
+        await transaction.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect("/api");
+    }
+    catch(e){
+        console.log(e);
+        res.send("Error updating details.")
+    }
+    
+})
 
 
 
